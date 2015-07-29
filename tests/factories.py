@@ -2,8 +2,8 @@
 from factory import Sequence, PostGenerationMethodCall
 from factory.alchemy import SQLAlchemyModelFactory
 
-from flask-app-umn-courses.user.models import User
-from flask-app-umn-courses.database import db
+from courses.user.models import User
+from courses.database import db
 
 
 class BaseFactory(SQLAlchemyModelFactory):

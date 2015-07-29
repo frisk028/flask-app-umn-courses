@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from flask-app-umn-courses.user.models import User, Role
+from courses.user.models import User, Role
 from .factories import UserFactory
 
 

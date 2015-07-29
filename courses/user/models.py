@@ -3,8 +3,8 @@ import datetime as dt
 
 from flask_login import UserMixin
 
-from flask-app-umn-courses.extensions import bcrypt
-from flask-app-umn-courses.database import (
+from courses.extensions import bcrypt
+from courses.database import (
     Column,
     db,
     Model,

@@ -3,7 +3,7 @@ from flask_wtf import Form
 from wtforms import TextField, PasswordField
 from wtforms.validators import DataRequired
 
-from flask-app-umn-courses.user.models import User
+from courses.user.models import User
 
 
 class LoginForm(Form):

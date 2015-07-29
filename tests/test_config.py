@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask-app-umn-courses.app import create_app
-from flask-app-umn-courses.settings import ProdConfig, DevConfig
+from courses.app import create_app
+from courses.settings import ProdConfig, DevConfig
 
 
 def test_production_config():

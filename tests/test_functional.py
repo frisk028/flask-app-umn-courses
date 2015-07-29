@@ -7,7 +7,7 @@ import pytest
 from flask import url_for
 
 
-from flask-app-umn-courses.user.models import User
+from courses.user.models import User
 from .factories import UserFactory
 
 

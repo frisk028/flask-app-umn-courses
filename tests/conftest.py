@@ -5,9 +5,9 @@ import os
 import pytest
 from webtest import TestApp
 
-from flask-app-umn-courses.settings import TestConfig
-from flask-app-umn-courses.app import create_app
-from flask-app-umn-courses.database import db as _db
+from courses.settings import TestConfig
+from courses.app import create_app
+from courses.database import db as _db
 
 from .factories import UserFactory
 

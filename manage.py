@@ -4,12 +4,12 @@ import os
 from flask_script import Manager, Shell, Server
 from flask_migrate import MigrateCommand
 
-from flask-app-umn-courses.app import create_app
-from flask-app-umn-courses.user.models import User
-from flask-app-umn-courses.settings import DevConfig, ProdConfig
-from flask-app-umn-courses.database import db
+from courses.app import create_app
+from courses.user.models import User
+from courses.settings import DevConfig, ProdConfig
+from courses.database import db
 
-if os.environ.get("FLASK-APP-UMN-COURSES_ENV") == 'prod':
+if os.environ.get("COURSES_ENV") == 'dev':
     app = create_app(ProdConfig)
 else:
     app = create_app(DevConfig)

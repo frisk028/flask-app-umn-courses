@@ -2,9 +2,9 @@
 """The app module, containing the app factory function."""
 from flask import Flask, render_template
 
-from flask-app-umn-courses.settings import ProdConfig
-from flask-app-umn-courses.assets import assets
-from flask-app-umn-courses.extensions import (
+from courses.settings import ProdConfig
+from courses.assets import assets
+from courses.extensions import (
     bcrypt,
     cache,
     db,
@@ -12,7 +12,7 @@ from flask-app-umn-courses.extensions import (
     migrate,
     debug_toolbar,
 )
-from flask-app-umn-courses import public, user
+from courses import public, user
 
 
 def create_app(config_object=ProdConfig):

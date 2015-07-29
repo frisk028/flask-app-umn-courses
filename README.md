@@ -9,7 +9,7 @@ Quickstart
 
 First, set your app's secret key as an environment variable. For example, example add the following to ``.bashrc`` or ``.bash_profile``.
 
-    export FLASK-APP-UMN-COURSES_SECRET='something-really-secret'
+    exportcourses_SECRET='something-really-secret'
 
 
 Then run the following commands to bootstrap your environment.
@@ -36,7 +36,7 @@ Once you have installed your DBMS, run the following to create your app's databa
 Deployment
 ----------
 
-In your production environment, make sure the ``FLASK-APP-UMN-COURSES_ENV`` environment variable is set to ``"prod"``.
+In your production environment, make sure the ``COURSES_ENV`` environment variable is set to ``"prod"``.
 
 
 Shell

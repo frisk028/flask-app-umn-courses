@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from flask-app-umn-courses.public.forms import LoginForm
-from flask-app-umn-courses.user.forms import RegisterForm
+from courses.public.forms import LoginForm
+from courses.user.forms import RegisterForm
 from .factories import UserFactory
 
 

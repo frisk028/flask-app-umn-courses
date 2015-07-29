@@ -4,12 +4,12 @@ from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_user, login_required, logout_user
 
-from flask-app-umn-courses.extensions import login_manager
-from flask-app-umn-courses.user.models import User
-from flask-app-umn-courses.public.forms import LoginForm
-from flask-app-umn-courses.user.forms import RegisterForm
-from flask-app-umn-courses.utils import flash_errors
-from flask-app-umn-courses.database import db
+from courses.extensions import login_manager
+from courses.user.models import User
+from courses.public.forms import LoginForm
+from courses.user.forms import RegisterForm
+from courses.utils import flash_errors
+from courses.database import db
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
