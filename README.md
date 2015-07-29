@@ -9,15 +9,12 @@ Quickstart
 
 First, set your app's secret key as an environment variable. For example, example add the following to ``.bashrc`` or ``.bash_profile``.
 
-.. code-block:: bash
-
     export FLASK-APP-UMN-COURSES_SECRET='something-really-secret'
 
 
 Then run the following commands to bootstrap your environment.
 
 
-::
 
     git clone https://github.com/frisk028/flask-app-umn-courses
     cd flask-app-umn-courses
@@ -28,7 +25,6 @@ You will see a pretty welcome screen.
 
 Once you have installed your DBMS, run the following to create your app's database tables and perform the initial migration:
 
-::
 
     python manage.py db init
     python manage.py db migrate
@@ -65,12 +61,10 @@ Migrations
 ----------
 
 Whenever a database migration needs to be made. Run the following commands:
-::
 
     python manage.py db migrate
 
 This will generate a new migration script. Then run:
-::
 
     python manage.py db upgrade
 
