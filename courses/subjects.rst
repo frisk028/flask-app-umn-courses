@@ -4,18 +4,19 @@ Crookston
 ----------
 A
 +++
-ABUS - Applied Business
-ACCT - Accounting
-AFEE - Agri, Food, and Environ Educ
-AGBU - Agricultural Business
-AGEC - Agricultural Economics
-AGRO - Agronomy
-ANSC - Animal Science
-APLS - Applied Studies
-ART - Art
-AS - Aerospace Studies
-ASM - Agricultural Systems Mgmt
-AVIA - Aviation
+
+- ABUS - Applied Business
+- ACCT - Accounting
+- AFEE - Agri, Food, and Environ Educ
+- AGBU - Agricultural Business
+- AGEC - Agricultural Economics
+- AGRO - Agronomy
+- ANSC - Animal Science
+- APLS - Applied Studies
+- ART - Art
+- AS - Aerospace Studies
+- ASM - Agricultural Systems Mgmt
+- AVIA - Aviation
 
 B
 +++
