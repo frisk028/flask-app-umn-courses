@@ -9,7 +9,7 @@ Quickstart
 
 First, set your app's secret key as an environment variable. For example, example add the following to ``.bashrc`` or ``.bash_profile``.
 
-    exportcourses_SECRET='something-really-secret'
+    export COURSES_SECRET='something-really-secret'
 
 
 Then run the following commands to bootstrap your environment.
