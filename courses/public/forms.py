@@ -43,8 +43,12 @@ class SearchForm(Form):
                        ('=','equal to'), ('>=', 'greater than or equal to'),
                        ('>', 'greater than')]
 
+    LEVEL_CHOICES = [(',catalog_number<5000', 'Undergraduate Courses'), 
+                     (',catalog_number>4999', 'Graduate and Professional Courses')]
+
     campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
     term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()])
+    level = SelectField(label='Level', choices=LEVEL_CHOICES, validators=[DataRequired()])
     subject = TextField(label='Subject', validators=[DataRequired()])
     course_number = TextField(label='Course Number')
     compare = SelectField(label='Course Number', choices=COMPARE_CHOICES)

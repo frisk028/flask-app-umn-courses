@@ -12,7 +12,7 @@ WI - Writing Intensive
 ENV - Environment
 GP - Global Perspectives
 LITR - Literature
-DSJ - Diversity and Social Justice in US
+DSJ - Diversity and Social Justice
 CIV - Civic Life and Ethics
 MATH - Mathmatical Thinking
 AH - Arts and Humanities

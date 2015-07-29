@@ -47,6 +47,24 @@ textarea {
           box-sizing: border-box;
 }
 
+.attr {
+  display: none;
+  width: 30%;
+  float: left;
+  list-style: none;
+  margin-right: 10px;
+}
+
+.visible {
+  display: block;
+}
+
+.course {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+
+
 /* footer */
 
 footer {

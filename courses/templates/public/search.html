@@ -8,13 +8,19 @@
                 {{form.campus.label}}
                 {{form.campus(class_="form-control")}}
             </div>
+            {% if class_search %}
             <div class="form-group">
                 {{form.term.label}}
                 {{form.term(class_="form-control")}}
             </div>
+            {% endif %}
             <div class="form-group">
                 {{form.subject.label}}
                 {{form.subject(placeholder="Ex. HIST", class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.level.label}}
+                {{form.level(class_="form-control")}}
             </div>
             <div class="form-group">
                 {{form.course_number.label}}

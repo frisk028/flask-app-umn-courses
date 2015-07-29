@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% set c = 1 %}
 {% block content %}
 <div class="container-narrow">
 	<h1>Results<h1>
@@ -11,10 +12,26 @@
             <h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
         {%endif %}
     	{% for course in courses %}
-    		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
-    		<p>{{ course['description'] }}</p>
-            <h4>Attributes</h4>
-            <script type="text/javascript">$.set_attributes((course['course_attributes']))</script>
+            <div id="course_{{ c }}" class="course">
+        		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
+        		<p>{{ course['description'] }}</p>
+                <div id="le" class="attr">
+                    <h4>Liberal Education</h4>
+                    <ul>
+                    </ul>
+                </div>
+                <div id="other" class="attr">
+                    <h4>Other Attributes</h4>
+                    <ul>
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                   var attributes = ({{ course['course_attributes']|tojson|safe }});
+                   var c = {{ c|safe }};
+                   $.set_attributes(attributes,c);
+                </script>
+            </div>
+            {% set c = c + 1 %}
     	{% endfor %}
     {% endif %}
 </div>

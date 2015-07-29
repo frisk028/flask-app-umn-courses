@@ -9,7 +9,7 @@ def get_courses(campus,subject,course_number=None,compare=None):
 
     response = urllib.urlopen(url);
     data = json.loads(response.read())
-
+    
     if len(data['courses']) > 200:
 	    data = None
     return data

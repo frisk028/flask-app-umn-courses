@@ -68,13 +68,13 @@ def about():
 
 @blueprint.route("/course/", methods=["GET", "POST"])
 @blueprint.route("/course/search/", methods=["GET", "POST"])
-def search():
+def course_search():
     course_number = None
     compare = None
     form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
-        subject = form.subject.data
+        subject = form.subject.data+form.level.data
         if form.course_number:
             course_number = form.course_number.data
             compare = form.compare.data
@@ -87,7 +87,7 @@ def search():
 
     else:
         flash_errors(form)
-    return render_template("public/search.html", form=form)
+    return render_template("public/search.html", form=form, class_search=False)
 
 @blueprint.route("/results/")
 def results():
