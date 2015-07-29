@@ -1,0 +1,4 @@
+*.pyc
+courses/*.pyc
+courses/.DS_Store
+.DS_Store
