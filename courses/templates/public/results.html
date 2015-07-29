@@ -2,11 +2,20 @@
 {% block content %}
 <div class="container-narrow">
 	<h1>Results<h1>
-	<h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
-	{% for course in courses %}
-		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
-		<p>{{ course['description'] }}</p>
-
-	{% endfor %}
+    {% if error %}
+        <p>Please perform a class or course search</p>
+    {% else %}
+        {% if class_search %}
+        	<h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
+        {% else %}
+            <h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
+        {%endif %}
+    	{% for course in courses %}
+    		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
+    		<p>{{ course['description'] }}</p>
+            <h4>Attributes</h4>
+            <script type="text/javascript">$.set_attributes((course['course_attributes']))</script>
+    	{% endfor %}
+    {% endif %}
 </div>
 {% endblock %}

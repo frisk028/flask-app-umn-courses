@@ -4,6 +4,8 @@ from flask import (Blueprint, request, render_template, flash, url_for,
                     redirect, session)
 from flask.ext.login import login_user, login_required, logout_user
 
+from ast import literal_eval
+
 from courses.extensions import login_manager
 from courses.user.models import User
 from courses.public.forms import LoginForm, SearchForm
@@ -11,6 +13,7 @@ from courses.public.umn import get_courses
 from courses.user.forms import RegisterForm
 from courses.utils import flash_errors
 from courses.database import db
+
 
 blueprint = Blueprint('public', __name__, static_folder="../static")
 
@@ -63,44 +66,66 @@ def about():
     form = LoginForm(request.form)
     return render_template("public/about.html", login_form=form)
 
-@blueprint.route("/courses/search/", methods=["GET", "POST"])
+@blueprint.route("/course/", methods=["GET", "POST"])
+@blueprint.route("/course/search/", methods=["GET", "POST"])
 def search():
     course_number = None
     compare = None
-    previous = False
     form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
-        term = form.term.data
         subject = form.subject.data
         if form.course_number:
             course_number = form.course_number.data
             compare = form.compare.data
-        data = get_courses(campus, term, subject, course_number, compare)
-        try:
-            redirect(url_for('.result', data=data))
-        except:
-            flash_error('Please narrow your search')
+        data = get_courses(campus, subject, course_number, compare)
+        if data:
+            return redirect(url_for('.results', data=data, class_search=False), code=302)
+        else:
+            form.errors['subject']=[('Request too large. Please narrow your search')]
+            flash_errors(form)
+
     else:
         flash_errors(form)
     return render_template("public/search.html", form=form)
 
-@blueprint.route("/courses/results/")
-def result(courses=[]):
+@blueprint.route("/results/")
+def results():
     abbreviations = { 'UMNTC': 'Twin Cities', 'UMNRO': 'Rochester', 'UMNCR': 'Crookston',
                        'UMNMO': 'Morris', 'UMNDL': 'Duluth'}
     semesters = { '3': 'Spring', '5': 'Summer', '9': 'Fall'}
-    data = request.args['data']  # counterpart for url_for()
-    courses = data['courses']
-    term_id = data['term']['term_id']
-    campus_abr = data['campus']['abbreviation']
-    year = '20' + term_id[1:3]
-    semester = semesters[term_id[3]]
-    campus = abbreviations[campus_abr]
-    subject = courses[0]['subject']['description']
+    instructor_modes = { 'P': 'In Person, Term Based', 'ID': 'Independent/Directed Study',
+                         'CE': 'Online Distance Learning', 'PA': 'Partially Online',
+                         'CO': 'Completely Online', 'PR': 'Primarily Online' }
+
+    error = False
+    courses = None
+    semester = None
+    campus = None
+    subject = None
+    year = None
+
+    data = request.args.get('data')
+    class_search = literal_eval(request.args.get('class_search'))
+
+    if not data:
+        error = True
+    else: 
+        data = literal_eval(data)
+
+        courses = data['courses']
+        term_id = data['term']['term_id']
+        campus_abr = data['campus']['abbreviation']
+        year = '20' + term_id[1:3]
+        semester = semesters[term_id[3]]
+        campus = abbreviations[campus_abr]
+        subject = courses[0]['subject']['description']
+
     return render_template("public/results.html",
                            courses=courses, 
                            year=year, 
                            semester=semester,
                            campus=campus,
-                           subject=subject)
+                           subject=subject,
+                           error=error,
+                           class_search=class_search)
