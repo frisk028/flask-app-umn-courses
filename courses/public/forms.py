@@ -55,7 +55,7 @@ class SearchForm(Form):
 
     def validate(self):
         initial_validation = super(SearchForm, self).validate()
-        if self.course_number:
+        if self.course_number.data:
             if self.compare.data == '':
                 self.compare.errors.append('Please enter a comparison')
                 return False

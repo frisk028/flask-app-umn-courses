@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-narrow">
+	<h1>Results<h1>
+	<h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
+	{% for course in courses %}
+		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
+		<p>{{ course['description'] }}</p>
+
+	{% endfor %}
+</div>
+{% endblock %}

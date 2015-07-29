@@ -7,6 +7,7 @@ from flask.ext.login import login_user, login_required, logout_user
 from courses.extensions import login_manager
 from courses.user.models import User
 from courses.public.forms import LoginForm, SearchForm
+from courses.public.umn import get_courses
 from courses.user.forms import RegisterForm
 from courses.utils import flash_errors
 from courses.database import db
@@ -64,22 +65,42 @@ def about():
 
 @blueprint.route("/courses/search/", methods=["GET", "POST"])
 def search():
+    course_number = None
+    compare = None
     previous = False
     form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
-        url = 'http://courses.umn.edu/campuses/%s/terms/%s/courses.json?q=' % (str(form.campus.data), form.term.data)
-        if form.subject:
-            url += 'subject_id=%s' % form.subject.data
-            previous = True
+        campus = form.campus.data
+        term = form.term.data
+        subject = form.subject.data
         if form.course_number:
-            if previous:
-                url += ',catalog_number%s%s' % (str(form.compare.data), form.course_number.data)
-            else:
-                url += 'catalog_number%s%s' % (str(form.compare.data), form.course_number.data)
-                previous = True
-            
-        return redirect(url)
+            course_number = form.course_number.data
+            compare = form.compare.data
+        data = get_courses(campus, term, subject, course_number, compare)
+        try:
+            redirect(url_for('.result', data=data))
+        except:
+            flash_error('Please narrow your search')
     else:
         flash_errors(form)
     return render_template("public/search.html", form=form)
 
+@blueprint.route("/courses/results/")
+def result(courses=[]):
+    abbreviations = { 'UMNTC': 'Twin Cities', 'UMNRO': 'Rochester', 'UMNCR': 'Crookston',
+                       'UMNMO': 'Morris', 'UMNDL': 'Duluth'}
+    semesters = { '3': 'Spring', '5': 'Summer', '9': 'Fall'}
+    data = request.args['data']  # counterpart for url_for()
+    courses = data['courses']
+    term_id = data['term']['term_id']
+    campus_abr = data['campus']['abbreviation']
+    year = '20' + term_id[1:3]
+    semester = semesters[term_id[3]]
+    campus = abbreviations[campus_abr]
+    subject = courses[0]['subject']['description']
+    return render_template("public/results.html",
+                           courses=courses, 
+                           year=year, 
+                           semester=semester,
+                           campus=campus,
+                           subject=subject)

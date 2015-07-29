@@ -8,4 +8,5 @@ def get_courses(campus,term,subject,course_number=None,compare=None):
 		url += ',catalog_number%s%s' % (compare, course_number)
 	response = urllib.urlopen(url);
 	data = json.loads(response.read())
+	
 	return data
