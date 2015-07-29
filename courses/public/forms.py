@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
-from wtforms import TextField, PasswordField
+from wtforms import TextField, PasswordField, SelectField
 from wtforms.validators import DataRequired
 
 from courses.user.models import User
@@ -32,3 +32,11 @@ class LoginForm(Form):
             self.username.errors.append('User not activated')
             return False
         return True
+
+class SearchForm(Form):
+    CAMPUS_CHOICES = [('umntc', 'Twin Cities'), ('umndl', 'Duluth'),
+                      ('umnro', 'Rochester'), ('umncr', 'Crookston'),
+                      ('umnmo', 'Morris')]
+    
+    campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
+

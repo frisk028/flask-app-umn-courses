@@ -6,7 +6,7 @@ from flask.ext.login import login_user, login_required, logout_user
 
 from courses.extensions import login_manager
 from courses.user.models import User
-from courses.public.forms import LoginForm
+from courses.public.forms import LoginForm, SearchForm
 from courses.user.forms import RegisterForm
 from courses.utils import flash_errors
 from courses.database import db
@@ -31,7 +31,7 @@ def home():
             return redirect(redirect_url)
         else:
             flash_errors(form)
-    return render_template("public/home.html", form=form)
+    return render_template("public/home.html", login_form=form)
 
 
 @blueprint.route('/logout/')
@@ -60,4 +60,10 @@ def register():
 @blueprint.route("/about/")
 def about():
     form = LoginForm(request.form)
-    return render_template("public/about.html", form=form)
+    return render_template("public/about.html", login_form=form)
+
+@blueprint.route("/courses/search/", methods=["GET", "POST"])
+def search():
+    form = SearchForm(request.form)
+    return render_template("public/search.html", form=form)
+
