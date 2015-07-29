@@ -20,20 +20,21 @@ A
 
 B
 +++
-BHS - Bachelor of Health Sciences
-BIOL - Biology
-BM - Bachelor of Manufacturing
+
+- BHS - Bachelor of Health Sciences
+- BIOL - Biology
+- BM - Bachelor of Manufacturing
 
 C
 +++
-CA - Computer Applications
-CHEM - Chemistry
-CI - Curriculum and Instruction
-CLS - Clinical Laboratory Science
-COMM - Communication
-COMP - Composition
-CRJS - Criminal Justice
-CS - Computer Software
+- CA - Computer Applications
+- CHEM - Chemistry
+- CI - Curriculum and Instruction
+- CLS - Clinical Laboratory Science
+- COMM - Communication
+- COMP - Composition
+- CRJS - Criminal Justice
+- CS - Computer Software
 
 E
 +++
