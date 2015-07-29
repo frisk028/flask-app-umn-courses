@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Public section, including homepage and signup."""
 from flask import (Blueprint, request, render_template, flash, url_for,
-                    redirect, session)
+                    redirect, session, make_response)
 from flask.ext.login import login_user, login_required, logout_user
 
 from ast import literal_eval
@@ -71,19 +71,22 @@ def about():
 def course_search():
     course_number = None
     compare = None
-    form = SearchForm(request.form, csrf_enabled=False)
+    form = SearchForm(request.form)
     if form.validate_on_submit():
         campus = form.campus.data
         subject = form.subject.data+form.level.data
         if form.course_number:
             course_number = form.course_number.data
             compare = form.compare.data
-        data = get_courses(campus, subject, course_number, compare)
-        if data:
-            return redirect(url_for('.results', data=data, class_search=False), code=302)
-        else:
-            form.errors['subject']=[('Request too large. Please narrow your search')]
-            flash_errors(form)
+
+        
+        session['class_search'] = False
+        session['course_number'] = course_number
+        session['compare'] = compare
+        session['campus'] = campus
+        session['subject'] = subject
+        
+        return redirect(url_for('.results'))
 
     else:
         flash_errors(form)
@@ -101,21 +104,26 @@ def results():
     error = False
     courses = None
     semester = None
-    campus = None
-    subject = None
+    term = None
+    campus_abr = str(session['campus'])
+    campus_abr = campus_abr.upper()
+    subject = session['subject']
     year = None
+    class_search = session['class_search']
+    course_number = session['course_number']
+    compare = session['compare']
 
-    data = request.args.get('data')
-    class_search = literal_eval(request.args.get('class_search'))
+    if class_search:
+        term = session['term']
+
+
+    data = get_courses(campus_abr, subject, course_number, compare)
 
     if not data:
         error = True
     else: 
-        data = literal_eval(data)
-
         courses = data['courses']
         term_id = data['term']['term_id']
-        campus_abr = data['campus']['abbreviation']
         year = '20' + term_id[1:3]
         semester = semesters[term_id[3]]
         campus = abbreviations[campus_abr]

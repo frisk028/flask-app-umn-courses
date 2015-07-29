@@ -9,12 +9,18 @@
                      'DSJ': 'Diversity and Social Justice', 'CIV': 'Civic Life and Ethics',
                      'MATH': 'Mathmatical Thinking', 'AH': 'Arts and Humanities',
                      'TS': 'Technology and Society', 'SOCS': 'Social Sciences'};
-        var other = {'TOPICS': 'Topics Course', '08': 'Classroom', 'HON': 'Honors'};
+        var other = {'TOPICS': 'Topics Course', '08': 'Classroom', 'HON': 'Honors',
+                     '06': 'Independent Study', 'THESIS': 'Thesis Course'};
     	if (family == 'CLE') {
-    		return cle[attribute_id];
+    		return cle[attribute_id]
 		}
 		else {
-			return other[attribute_id];
+      if (other[attribute_id]) {
+  			return other[attribute_id]
+      }
+      else {
+        return attribute_id
+      }
 		}
     };
     $.set_attributes = function(attributes, c ) {

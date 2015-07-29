@@ -9,7 +9,7 @@ from courses.user.models import User
 from courses.settings import DevConfig, ProdConfig
 from courses.database import db
 
-if os.environ.get("COURSES_ENV") == 'dev':
+if os.environ.get("COURSES_ENV") == 'prod':
     app = create_app(ProdConfig)
 else:
     app = create_app(DevConfig)
