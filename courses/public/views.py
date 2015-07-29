@@ -64,6 +64,22 @@ def about():
 
 @blueprint.route("/courses/search/", methods=["GET", "POST"])
 def search():
-    form = SearchForm(request.form)
+    previous = False
+    form = SearchForm(request.form, csrf_enabled=False)
+    if form.validate_on_submit():
+        url = 'http://courses.umn.edu/campuses/%s/terms/%s/courses.json?q=' % (str(form.campus.data), form.term.data)
+        if form.subject:
+            url += 'subject_id=%s' % form.subject.data
+            previous = True
+        if form.course_number:
+            if previous:
+                url += ',catalog_number%s%s' % (str(form.compare.data), form.course_number.data)
+            else:
+                url += 'catalog_number%s%s' % (str(form.compare.data), form.course_number.data)
+                previous = True
+            
+        return redirect(url)
+    else:
+        flash_errors(form)
     return render_template("public/search.html", form=form)
 

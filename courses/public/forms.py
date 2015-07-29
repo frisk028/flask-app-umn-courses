@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, SelectField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Required
 
 from courses.user.models import User
-
 
 class LoginForm(Form):
     username = TextField('Username', validators=[DataRequired()])
@@ -37,6 +36,28 @@ class SearchForm(Form):
     CAMPUS_CHOICES = [('umntc', 'Twin Cities'), ('umndl', 'Duluth'),
                       ('umnro', 'Rochester'), ('umncr', 'Crookston'),
                       ('umnmo', 'Morris')]
-    
+
+    TERM_CHOICES = [('1155', 'Summer 2015'), ('1159', 'Fall 2015'), ('1163', 'Spring 2016')]
+
+    COMPARE_CHOICES = [('',''), ('<', 'less than'), ('<=', 'less than or equal to'),
+                       ('=','equal to'), ('>=', 'greater than or equal to'),
+                       ('>', 'greater than')]
+
     campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
+    term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()])
+    subject = TextField(label='Subject', validators=[DataRequired()])
+    course_number = TextField(label='Course Number')
+    compare = SelectField(label='Course Number', choices=COMPARE_CHOICES)
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.user = None
+
+    def validate(self):
+        initial_validation = super(SearchForm, self).validate()
+        if self.course_number:
+            if self.compare.data == '':
+                self.compare.errors.append('Please enter a comparison')
+                return False
+        return True
 
