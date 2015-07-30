@@ -1,20 +1,35 @@
 {% extends "layout.html" %}
+{% from "macros/sections.html" import sections %}
 {% set c = 1 %}
 {% block content %}
 <div class="container-narrow">
-	<h1>Results<h1>
+	<h1>Results</h1>
     {% if error %}
         <p>Please perform a class or course search</p>
     {% else %}
         {% if class_search %}
-        	<h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
+        	<p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </p>
         {% else %}
-            <h2>{{ campus }} <i class="fa fa-arrow-right"></i> {{ subject }} </h2>
+            <p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ subject }} </p>
         {%endif %}
     	{% for course in courses %}
             <div id="course_{{ c }}" class="course">
         		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
         		<p>{{ course['description'] }}</p>
+                <dl>
+                    <dt>Credits</dt>
+                    {% if course['credits_minimum'] != course['credits_maximum'] %}
+                    <dd>{{ course['credits_minimum'] }} - {{ course['credits_maximum'] }}</dd>
+                    {% else %}
+                    <dd>{{ course['credits_maximum'] }}</dd>
+                    {% endif %}
+                    {% if not class_search %}
+                    <dt>Frequency</dt>
+                    <dd>{{ course['offer_frequency'] }}</dd>
+                    {% endif %}
+                    <dt>Grading Basis</dt>
+                    <dd>{{ course['grading_basis']['description'] }}</dd>
+                </dl>
                 <div id="le" class="attr">
                     <h4>Liberal Education</h4>
                     <ul>
@@ -30,6 +45,39 @@
                    var c = {{ c|safe }};
                    $.set_attributes(attributes,c);
                 </script>
+                {% if class_search %}
+                <div>
+                    <div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class Number</th>
+                                    <th>Section</th>
+                                    <th>Type</th>
+                                    <th>Day(s) and Time</th>
+                                    <th>Instructor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for section in course['sections'] %}
+                                {% set meeting_pattern = section['meeting_patterns']|tojson|safe %}
+                                <tr>
+                                    <td>{{ section['class_number'] }}</td>
+                                    <td>{{ section['number'] }}</td>
+                                    <td>{{ section['component'] }}</td>
+                                    <td>{% for item in meeting_pattern.iteritems() %}
+                                        {{ item }}
+                                        {% endfor %}</td>
+                                    <td>{% for instructor in section['instructors'] %}
+                                        {% if instructor['role'] == 'PI' %}
+                                        {{ instructor['name'] }}
+                                        {% endif %}
+                                        {% endfor %}</td>
+                                </tr>
+                                {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
             </div>
             {% set c = c + 1 %}
     	{% endfor %}
