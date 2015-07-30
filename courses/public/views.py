@@ -9,7 +9,7 @@ from ast import literal_eval
 from courses.extensions import login_manager
 from courses.user.models import User
 from courses.public.forms import LoginForm, SearchForm
-from courses.public.umn import get_courses
+from courses.public.umn import get_courses, get_classes
 from courses.user.forms import RegisterForm
 from courses.utils import flash_errors
 from courses.database import db
@@ -71,10 +71,11 @@ def about():
 def course_search():
     course_number = None
     compare = None
-    form = SearchForm(request.form)
+    form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
-        subject = form.subject.data+form.level.data
+        subject = form.subject.data
+        level = form.level.data
         if form.course_number:
             course_number = form.course_number.data
             compare = form.compare.data
@@ -85,12 +86,43 @@ def course_search():
         session['compare'] = compare
         session['campus'] = campus
         session['subject'] = subject
+        session['level'] = level
         
         return redirect(url_for('.results'))
 
     else:
         flash_errors(form)
     return render_template("public/search.html", form=form, class_search=False)
+
+@blueprint.route("/class/", methods=["GET", "POST"])
+@blueprint.route("/class/search/", methods=["GET", "POST"])
+def class_search():
+    course_number = None
+    compare = None
+    form = SearchForm(request.form, csrf_enabled=False)
+    if form.validate_on_submit():
+        campus = form.campus.data
+        term = form.term.data
+        subject = form.subject.data
+        level = form.level.data
+        if form.course_number:
+            course_number = form.course_number.data
+            compare = form.compare.data
+
+        
+        session['class_search'] = True
+        session['course_number'] = course_number
+        session['compare'] = compare
+        session['campus'] = campus
+        session['subject'] = subject
+        session['term'] = term
+        session['level'] = level
+        
+        return redirect(url_for('.results'))
+
+    else:
+        flash_errors(form)
+    return render_template("public/search.html", form=form, class_search=True)
 
 @blueprint.route("/results/")
 def results():
@@ -112,12 +144,13 @@ def results():
     class_search = session['class_search']
     course_number = session['course_number']
     compare = session['compare']
+    level = session['level']
 
     if class_search:
         term = session['term']
-
-
-    data = get_courses(campus_abr, subject, course_number, compare)
+        data = get_classes(campus_abr, term, level, subject, course_number, compare)
+    else:
+        data = get_courses(campus_abr, level, subject, course_number, compare)
 
     if not data:
         error = True
