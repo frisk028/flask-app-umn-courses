@@ -43,12 +43,12 @@ class SearchForm(Form):
 
     TERM_CHOICES = [('1155', 'Summer 2015'), ('1159', 'Fall 2015'), ('1163', 'Spring 2016')]
 
-    COMPARE_CHOICES = [('',''), ('<', 'less than'), ('<=', 'less than or equal to'),
+    COMPARE_CHOICES = [('','--choose comparison--'), ('<', 'less than'), ('<=', 'less than or equal to'),
                        ('=','equal to'), ('>=', 'greater than or equal to'),
                        ('>', 'greater than')]
 
-    LEVEL_CHOICES = [(',catalog_number<5000', 'Undergraduate Courses'), 
-                     (',catalog_number>4999', 'Graduate and Professional Courses')]
+    LEVEL_CHOICES = [('catalog_number<5000', 'Undergraduate Courses'), 
+                     ('catalog_number>4999', 'Graduate and Professional Courses')]
 
     campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
     term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()])
