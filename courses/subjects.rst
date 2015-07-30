@@ -38,30 +38,30 @@ C
 
 E
 +++
-ECE - Early Childhood Education
-ECON - Economics
-ED - Education
-EDHD - Educational/Human Development
-EDPA - Educational Policy & Admin
-ENGL - English
-ENSC - Environmental Science
-ENTR - Entrepreneurship
-EQSC - Equine Science
-ESL - English as a Second Language
+- ECE - Early Childhood Education
+- ECON - Economics
+- ED - Education
+- EDHD - Educational/Human Development
+- EDPA - Educational Policy & Admin
+- ENGL - English
+- ENSC - Environmental Science
+- ENTR - Entrepreneurship
+- EQSC - Equine Science
+- ESL - English as a Second Language
 
 F
 +++
-FIN - Finance
-FOST - Foreign Study
-FSCN - Food Science and Nutrition
+- FIN - Finance
+- FOST - Foreign Study
+- FSCN - Food Science and Nutrition
 
 G
 +++
-GBUS - General Business
-GEOG - Geography
-GEOL - Geology
-GNAG - General Agriculture
-GNED - General Education
+- GBUS - General Business
+- GEOG - Geography
+- GEOL - Geology
+- GNAG - General Agriculture
+- GNED - General Education
 
 H
 +++

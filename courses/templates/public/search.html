@@ -8,12 +8,10 @@
                 {{form.campus.label}}
                 {{form.campus(class_="form-control")}}
             </div>
-            {% if class_search %}
-            <div class="form-group">
+            <div class="form-group {% if not class_search %}hidden{% endif %}">
                 {{form.term.label}}
                 {{form.term(class_="form-control")}}
             </div>
-            {% endif %}
             <div class="form-group">
                 {{form.subject.label}}
                 {{form.subject(placeholder="Ex. HIST", class_="form-control")}}

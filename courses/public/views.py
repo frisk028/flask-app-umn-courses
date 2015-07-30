@@ -71,7 +71,7 @@ def about():
 def course_search():
     course_number = None
     compare = None
-    form = SearchForm(request.form)
+    form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
         subject = form.subject.data+form.level.data
