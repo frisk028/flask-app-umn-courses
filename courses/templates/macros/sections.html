@@ -1,0 +1,7 @@
+{% macro sections(s) %}
+    {% for section in s %}
+    <div>
+        <h5>Section {{ section['number'] }} | {{ section['component'] }}</h5>
+    </div>
+    {% endfor %}
+{% endmacro %}
