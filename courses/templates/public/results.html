@@ -46,37 +46,42 @@
                    $.set_attributes(attributes,c);
                 </script>
                 {% if class_search %}
-                <div>
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Class Number</th>
-                                    <th>Section</th>
-                                    <th>Type</th>
-                                    <th>Day(s) and Time</th>
-                                    <th>Instructor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for section in course['sections'] %}
-                                {% set meeting_pattern = section['meeting_patterns']|tojson|safe %}
-                                <tr>
-                                    <td>{{ section['class_number'] }}</td>
-                                    <td>{{ section['number'] }}</td>
-                                    <td>{{ section['component'] }}</td>
-                                    <td>{% for item in meeting_pattern.iteritems() %}
-                                        {{ item }}
-                                        {% endfor %}</td>
-                                    <td>{% for instructor in section['instructors'] %}
-                                        {% if instructor['role'] == 'PI' %}
-                                        {{ instructor['name'] }}
-                                        {% endif %}
-                                        {% endfor %}</td>
-                                </tr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class Number</th>
+                            <th>Section</th>
+                            <th>Type</th>
+                            <th>Days</th>
+                            <th>Time</th>
+                            <th>Instructor</th>
+                            <th>Instuction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for section in course['sections'] %}
+                        {% set meeting_pattern = section['meeting_patterns'][0] %}
+                        <tr id="{{section['number']}}">
+                            <td>{{ section['class_number'] }}</td>
+                            <td>{{ section['number'] }}</td>
+                            <td>{{ section['component'] }}</td>
+                            <td class="day">{% for day in meeting_pattern['days'] %}
+                                {{day['abbreviation']}}
                                 {% endfor %}
-                    </div>
-                </div>
+                            </td>
+                            <td>{{ meeting_pattern['start_time'] }}-{{ meeting_pattern['end_time'] }}
+                            </td>
+                            <td>{% for instructor in section['instructors'] %}
+                                {% if instructor['role'] == 'PI' %}
+                                {{ instructor['name'] }}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>{{ section['instruction_mode']['description'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% endif %}
             </div>
             {% set c = c + 1 %}

@@ -7,7 +7,14 @@
             <div class="form-group">
                 {{form.campus.label}}
                 {{form.campus(class_="form-control")}}
+                {{form.campus.default}}
             </div>
+            {% if form.campus.data == 'umntc' %}
+            <div class="form-group">
+                {{ form.umntc.label }}
+                {{ form.umntc(class_="form-control") }}
+            </div>
+            {% endif %}
             <div class="form-group {% if not class_search %}hidden{% endif %}">
                 {{form.term.label}}
                 {{form.term(class_="form-control")}}

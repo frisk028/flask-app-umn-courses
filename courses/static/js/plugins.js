@@ -39,4 +39,16 @@
 		  }
 		});
     };
+    $.set_day_time = function(meeting_pattern, c, sec) {
+      var text = '';
+      var start = meeting_pattern[0]['start_time'];
+      var end = meeting_pattern[0]['end_time'];
+      var time_text = start + "-" + end;
+      var course_id = '#course_'+c;
+      $.each(meeting_pattern[0]['days'], function() {
+        text += this['abbreviation']+" ";
+      });
+      text = text.trim() + "/" + time_text;
+      $(course_id+' > table > #'+sec+' > #dt').append(text);
+    }
 })(jQuery);

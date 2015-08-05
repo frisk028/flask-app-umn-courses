@@ -20,6 +20,30 @@ textarea {
   resize: vertical;
 }
 
+table {
+  margin-top: 1em;
+  width: 100%;
+  border: 1px solid #222;
+}
+
+th {
+  background-color: #333;
+  color: #fff;
+  padding: .5em 1em;
+  font-weight: normal;
+  border: 1px solid #222;
+}
+
+td {
+  background-color: #eee;
+  padding: .5em 1em;
+  border: 1px solid #222;
+}
+
+.day {
+  text-transform: uppercase;
+}
+
 .container-narrow{
   margin: 0 auto;
   max-width: 700px;
@@ -53,6 +77,7 @@ textarea {
   float: left;
   list-style: none;
   margin-right: 10px;
+  margin-bottom: 2em;
 }
 
 .visible {

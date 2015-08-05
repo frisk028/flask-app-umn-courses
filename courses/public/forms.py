@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import url_for
 from flask_wtf import Form
-from wtforms import TextField, PasswordField, SelectField
+from wtforms import TextField, PasswordField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Required
 
 from courses.user.models import User
@@ -50,7 +50,15 @@ class SearchForm(Form):
     LEVEL_CHOICES = [('catalog_number<5000', 'Undergraduate Courses'), 
                      ('catalog_number>4999', 'Graduate and Professional Courses')]
 
+    UMNTC_CHOICES =[('HIS','Historical Perspectives'), ('WI', 'Writing Intensive'), 
+                     ('BIOL', 'Biological Sciences'), ('PHYS', 'Physical Sciences'),
+                     ('GP', 'Global Perspectives'), ('LITR', 'Literature'), ('ENV', 'Environment'),
+                     ('DSJ', 'Diversity and Social Justice'), ('CIV', 'Civic Life and Ethics'),
+                     ('MATH', 'Mathmatical Thinking'), ('AH', 'Arts and Humanities'),
+                     ('TS', 'Technology and Society'), ('SOCS', 'Social Sciences')]
+
     campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
+    umntc = SelectMultipleField(label='Liberal Education', choices=UMNTC_CHOICES)
     term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()])
     level = SelectField(label='Level', choices=LEVEL_CHOICES, validators=[DataRequired()])
     subject = TextField(label='Subject')
