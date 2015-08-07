@@ -8,27 +8,27 @@
         <p>Please perform a class or course search</p>
     {% else %}
         {% if class_search %}
-        	<p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} <i class="fa fa-arrow-right"></i> {{ subject }} </p>
+        	<p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} </p>
         {% else %}
-            <p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ subject }} </p>
+            <p>{{ campus }}</p>
         {%endif %}
     	{% for course in courses %}
             <div id="course_{{ c }}" class="course">
-        		<h3>{{ course['subject']['subject_id'] }} {{course['catalog_number'] }} | {{ course['title'] }}</h3>
-        		<p>{{ course['description'] }}</p>
+        		<h3>{{ course.subject }} {{course.number }} | {{ course.title }}</h3>
+        		<p>{{ course.description|safe }}</p>
                 <dl>
                     <dt>Credits</dt>
-                    {% if course['credits_minimum'] != course['credits_maximum'] %}
-                    <dd>{{ course['credits_minimum'] }} - {{ course['credits_maximum'] }}</dd>
+                    {% if course.credits_minimum != course.credits_maximum %}
+                    <dd>{{ course.credits_minimum }} - {{ course.credits_maximum }}</dd>
                     {% else %}
-                    <dd>{{ course['credits_maximum'] }}</dd>
+                    <dd>{{ course.credits_maximum }}</dd>
                     {% endif %}
                     {% if not class_search %}
                     <dt>Frequency</dt>
                     <dd>{{ course['offer_frequency'] }}</dd>
                     {% endif %}
                     <dt>Grading Basis</dt>
-                    <dd>{{ course['grading_basis']['description'] }}</dd>
+                    <dd>{{ course.grading_basis }}</dd>
                 </dl>
                 <div id="le" class="attr">
                     <h4>Liberal Education</h4>
@@ -40,11 +40,6 @@
                     <ul>
                     </ul>
                 </div>
-                <script type="text/javascript">
-                   var attributes = ({{ course['course_attributes']|tojson|safe }});
-                   var c = {{ c|safe }};
-                   $.set_attributes(attributes,c);
-                </script>
                 {% if class_search %}
                 <div>
                     <div>
@@ -59,19 +54,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for section in course['sections'] %}
-                                {% set meeting_pattern = section['meeting_patterns']|tojson|safe %}
+                                {% for section in course.sections %}
                                 <tr>
-                                    <td>{{ section['class_number'] }}</td>
-                                    <td>{{ section['number'] }}</td>
-                                    <td>{{ section['component'] }}</td>
-                                    <td>{% for item in meeting_pattern.iteritems() %}
-                                        {{ item }}
-                                        {% endfor %}</td>
-                                    <td>{% for instructor in section['instructors'] %}
-                                        {% if instructor['role'] == 'PI' %}
-                                        {{ instructor['name'] }}
-                                        {% endif %}
+                                    <td>{{ section.class_number }}</td>
+                                    <td>{{ section.number }}</td>
+                                    <td>{{ section.component }}</td>
+                                    <td>{% for day in section.days %}
+                                         {{ day }}&nbsp;
+                                        {% endfor %}
+                                        {{ section.start_time }} - {{ section.end_time }}</td>
+                                    <td>{% for instructor in section.instructor %}
+                                        {{ instructor }}
                                         {% endfor %}</td>
                                 </tr>
                                 {% endfor %}
