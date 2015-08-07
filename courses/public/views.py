@@ -129,9 +129,6 @@ def results():
     abbreviations = { 'UMNTC': 'Twin Cities', 'UMNRO': 'Rochester', 'UMNCR': 'Crookston',
                        'UMNMO': 'Morris', 'UMNDL': 'Duluth'}
     semesters = { '3': 'Spring', '5': 'Summer', '9': 'Fall'}
-    instructor_modes = { 'P': 'In Person, Term Based', 'ID': 'Independent/Directed Study',
-                         'CE': 'Online Distance Learning', 'PA': 'Partially Online',
-                         'CO': 'Completely Online', 'PR': 'Primarily Online' }
 
     error = False
     courses = None
@@ -150,23 +147,21 @@ def results():
         term = session['term']
         data = get_classes(campus_abr, term, level, subject, course_number, compare)
     else:
+        term = '1159'
         data = get_courses(campus_abr, level, subject, course_number, compare)
 
     if not data:
         error = True
     else: 
-        courses = data['courses']
-        term_id = data['term']['term_id']
-        year = '20' + term_id[1:3]
-        semester = semesters[term_id[3]]
+        courses = data
+        year = '20' + term[1:3]
+        semester = semesters[term[3]]
         campus = abbreviations[campus_abr]
-        subject = courses[0]['subject']['description']
 
     return render_template("public/results.html",
                            courses=courses, 
                            year=year, 
                            semester=semester,
                            campus=campus,
-                           subject=subject,
                            error=error,
                            class_search=class_search)

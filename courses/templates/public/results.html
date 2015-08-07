@@ -25,51 +25,67 @@
                     {% endif %}
                     {% if not class_search %}
                     <dt>Frequency</dt>
-                    <dd>{{ course['offer_frequency'] }}</dd>
+                    <dd>{{ course.frequency }}</dd>
                     {% endif %}
                     <dt>Grading Basis</dt>
                     <dd>{{ course.grading_basis }}</dd>
                 </dl>
-                <div id="le" class="attr">
+                {% if course.lib_ed != [] %}
+                <div id="le" class="attr visible">
                     <h4>Liberal Education</h4>
                     <ul>
+                        {% for le in course.lib_ed %}
+                        <li>{{ le }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
-                <div id="other" class="attr">
+                {% endif %}
+                {% if course.attributes != [] %}
+                <div id="other" class="attr visible">
                     <h4>Other Attributes</h4>
                     <ul>
+                        {% for attr in course.attributes %}
+                        <li>{{ attr }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
+                {% endif %}
                 {% if class_search %}
-                <div>
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Class Number</th>
-                                    <th>Section</th>
-                                    <th>Type</th>
-                                    <th>Day(s) and Time</th>
-                                    <th>Instructor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for section in course.sections %}
-                                <tr>
-                                    <td>{{ section.class_number }}</td>
-                                    <td>{{ section.number }}</td>
-                                    <td>{{ section.component }}</td>
-                                    <td>{% for day in section.days %}
-                                         {{ day }}&nbsp;
-                                        {% endfor %}
-                                        {{ section.start_time }} - {{ section.end_time }}</td>
-                                    <td>{% for instructor in section.instructor %}
-                                        {{ instructor }}
-                                        {% endfor %}</td>
-                                </tr>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class Number</th>
+                            <th>Section</th>
+                            <th>Type</th>
+                            <th>Days</th>
+                            <th>Time</th>
+                            <th>Instructor</th>
+                            <th>Instuction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for section in course.sections %}
+                        <tr id="{{section.number}}">
+                            <td>{{ section.class_number }}</td>
+                            <td>{{ section.number }}</td>
+                            <td>{{ section.component}}</td>
+                            <td class="day">{% for day in section.days %}
+                                {{day}}
                                 {% endfor %}
-                    </div>
-                </div>
+                            </td>
+                            <td>{% if section.start_time and section.end_time %}
+                                {{ section.start_time }}-{{ section.end_time }}
+                                {% endif %}
+                            </td>
+                            <td>{% for instructor in section.instructor%}
+                                {{ instructor }}
+                                {% endfor %}
+                            </td>
+                            <td>{{ section.mode }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% endif %}
             </div>
             {% set c = c + 1 %}
