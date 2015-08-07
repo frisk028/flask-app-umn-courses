@@ -2,5 +2,9 @@
 
 (function($) {
     "use strict"
+    var displayLibEd = function () {
+        var allLibEds = document.getElementsByClassName('.lib-ed')
+        console.log(allLibEds);
+    }
     
 })(jQuery);

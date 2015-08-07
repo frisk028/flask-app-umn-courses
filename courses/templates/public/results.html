@@ -5,13 +5,8 @@
 <div class="container-narrow">
 	<h1>Results</h1>
     {% if error %}
-        <p>Please perform a class or course search</p>
+        <p>Please perform a <a href="/class/search">class</a> or <a href="/course/search">course</a> search</p>
     {% else %}
-        {% if class_search %}
-        	<p>{{ campus }} <i class="fa fa-arrow-right"></i> {{ semester }} {{ year }} </p>
-        {% else %}
-            <p>{{ campus }}</p>
-        {%endif %}
     	{% for course in courses %}
             <div id="course_{{ c }}" class="course">
         		<h3>{{ course.subject }} {{course.number }} | {{ course.title }}</h3>
@@ -31,7 +26,7 @@
                     <dd>{{ course.grading_basis }}</dd>
                 </dl>
                 {% if course.lib_ed != [] %}
-                <div id="le" class="attr visible">
+                <div id="le" class="attr col-md-4">
                     <h4>Liberal Education</h4>
                     <ul>
                         {% for le in course.lib_ed %}
@@ -41,7 +36,7 @@
                 </div>
                 {% endif %}
                 {% if course.attributes != [] %}
-                <div id="other" class="attr visible">
+                <div id="other" class="attr col-md-4">
                     <h4>Other Attributes</h4>
                     <ul>
                         {% for attr in course.attributes %}
@@ -78,7 +73,9 @@
                                 {% endif %}
                             </td>
                             <td>{% for instructor in section.instructor%}
-                                {{ instructor }}
+                                    {% if instructor %}
+                                        {{ instructor }}
+                                    {% endif %}
                                 {% endfor %}
                             </td>
                             <td>{{ section.mode }}</td>

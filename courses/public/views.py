@@ -30,11 +30,19 @@ def course_search():
     form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
+        term = "1159"
         subject = form.subject.data
         level = form.level.data
-        if form.course_number:
-            course_number = form.course_number.data
-            compare = form.compare.data
+        course_number = form.course_number.data
+        compare = form.compare.data
+        if campus == "umncr":
+            le = form.ge.data
+        elif campus == "umnmo":
+            le = form.ger.data
+        elif campus == "umndl":
+            le = form.dle.data
+        else:
+            le = form.cle.data
 
         
         session['class_search'] = False
@@ -42,7 +50,9 @@ def course_search():
         session['compare'] = compare
         session['campus'] = campus
         session['subject'] = subject
+        session['term'] = term
         session['level'] = level
+        session['le'] = le
         
         return redirect(url_for('.results'))
 
@@ -53,17 +63,22 @@ def course_search():
 @blueprint.route("/class/", methods=["GET", "POST"])
 @blueprint.route("/class/search/", methods=["GET", "POST"])
 def class_search():
-    course_number = None
-    compare = None
     form = SearchForm(request.form, csrf_enabled=False)
     if form.validate_on_submit():
         campus = form.campus.data
         term = form.term.data
         subject = form.subject.data
         level = form.level.data
-        if form.course_number:
-            course_number = form.course_number.data
-            compare = form.compare.data
+        course_number = form.course_number.data
+        compare = form.compare.data
+        if campus == "umncr":
+            le = form.ge.data
+        elif campus == "umnmo":
+            le = form.ger.data
+        elif campus == "umndl":
+            le = form.dle.data
+        else:
+            le = form.cle.data
 
         
         session['class_search'] = True
@@ -73,7 +88,8 @@ def class_search():
         session['subject'] = subject
         session['term'] = term
         session['level'] = level
-        
+        session['le'] = le
+
         return redirect(url_for('.results'))
 
     else:
@@ -81,43 +97,37 @@ def class_search():
     return render_template("public/search.html", form=form, class_search=True)
 
 @blueprint.route("/results/")
+@blueprint.route("/results/<path:path>/")
 def results():
-    abbreviations = { 'UMNTC': 'Twin Cities', 'UMNRO': 'Rochester', 'UMNCR': 'Crookston',
-                       'UMNMO': 'Morris', 'UMNDL': 'Duluth'}
-    semesters = { '3': 'Spring', '5': 'Summer', '9': 'Fall'}
-
+    # abbreviations = { 'UMNTC': 'Twin Cities', 'UMNRO': 'Rochester', 'UMNCR': 'Crookston',
+    #                    'UMNMO': 'Morris', 'UMNDL': 'Duluth'}
+    # semesters = { '3': 'Spring', '5': 'Summer', '9': 'Fall'}
     error = False
     courses = None
-    semester = None
     term = None
     campus_abr = str(session['campus'])
     campus_abr = campus_abr.upper()
     subject = session['subject']
-    year = None
     class_search = session['class_search']
     course_number = session['course_number']
     compare = session['compare']
     level = session['level']
+    le = session['le']
 
     if class_search:
         term = session['term']
-        data = get_classes(campus_abr, term, level, subject, course_number, compare)
+        data = get_classes(campus_abr, term, level, subject, course_number, compare, le)
     else:
         term = '1159'
-        data = get_courses(campus_abr, level, subject, course_number, compare)
+        data = get_courses(campus_abr, level, subject, course_number, compare, le)
 
     if not data:
         error = True
     else: 
         courses = data
-        year = '20' + term[1:3]
-        semester = semesters[term[3]]
-        campus = abbreviations[campus_abr]
+
 
     return render_template("public/results.html",
-                           courses=courses, 
-                           year=year, 
-                           semester=semester,
-                           campus=campus,
+                           courses=courses,
                            error=error,
                            class_search=class_search)

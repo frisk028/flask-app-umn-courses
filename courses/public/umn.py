@@ -63,6 +63,9 @@ class Section(object):
         self.days = days
         self.class_number = class_number
 
+    def __cmp__(self,other):
+      return cmp(int(self.number), int(other.number))
+
 class CourseSearch(object):
     def __init__(self, url=''):
         self.url = url
@@ -217,6 +220,8 @@ class CourseSearch(object):
                   attributes.append(a)
                 else:
                   lib_ed.append(a)
+                  
+            sections.sort(key = lambda s: s.number)
             results.append(
                 Course(
                     subject=course['subject']['subject_id'],
@@ -235,12 +240,17 @@ class CourseSearch(object):
 
 
 
-def get_courses(campus, level, subject,course_number=None,compare=None):
+def get_courses(campus, level, subject,course_number=None,compare=None, le=[]):
     url = 'http://courses.umn.edu/campuses/%s/terms/1159/courses.json?q=%s' % (campus, level)
     if subject:
         url += ',subject_id=%s' % subject
     if course_number:
-		url += ',catalog_number%s%s' % (compare, course_number)
+  		url += ',catalog_number%s%s' % (compare, course_number)
+    if le != []:
+      f = le.pop()
+      url += ',course_attribute_id=%s' % f
+      for l in le:
+        url += '|%s' % l
 
     data = CourseSearch(url).get_object_list()
     if len(data) > 200:
@@ -249,7 +259,7 @@ def get_courses(campus, level, subject,course_number=None,compare=None):
     return data
 
 
-def get_classes(campus, term, level, subject,course_number=None,compare=None):
+def get_classes(campus, term, level, subject,course_number=None,compare=None, le=[]):
     url = 'http://courses.umn.edu/campuses/%s/terms/%s/classes.json?q=%s' % (campus, term, level)
     if subject:
         url += ',subject_id=%s' % subject

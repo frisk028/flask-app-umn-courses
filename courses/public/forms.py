@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import Form
-from wtforms import TextField, SelectField, SelectMultipleField
+from wtforms import TextField, SelectField, SelectMultipleField, widgets
 from wtforms.validators import DataRequired
 
 import json
 import os
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
 
 class SearchForm(Form):
     CAMPUS_CHOICES = [('umntc', 'Twin Cities'), ('umndl', 'Duluth'),
@@ -20,16 +24,38 @@ class SearchForm(Form):
     LEVEL_CHOICES = [('catalog_number<5000', 'Undergraduate Courses'), 
                      ('catalog_number>4999', 'Graduate and Professional Courses')]
 
-    UMNTC_CHOICES =[('HIS','Historical Perspectives'), ('WI', 'Writing Intensive'), 
-                     ('BIOL', 'Biological Sciences'), ('PHYS', 'Physical Sciences'),
-                     ('GP', 'Global Perspectives'), ('LITR', 'Literature'), ('ENV', 'Environment'),
-                     ('DSJ', 'Diversity and Social Justice'), ('CIV', 'Civic Life and Ethics'),
-                     ('MATH', 'Mathmatical Thinking'), ('AH', 'Arts and Humanities'),
-                     ('TS', 'Technology and Society'), ('SOCS', 'Social Sciences')]
+    CLE_CHOICES =[('AH', 'Arts and Humanities'), ('BIOL', 'Biological Sciences'), 
+                  ('CIV', 'Civic Life and Ethics'), ('DSJ', 'Diversity and Social Justice'), 
+                  ('ENV', 'Environment'), ('GP', 'Global Perspectives'), ('HIS','Historical Perspectives'), 
+                  ('LITR', 'Literature'), ('MATH', 'Mathmatical Thinking'), ('PHYS', 'Physical Sciences'), 
+                  ('SOCS', 'Social Sciences'), ('TS', 'Technology and Society'), ('WI', 'Writing Intensive')]
+
+    GE_CHOICES = [('BIOL SCI', 'Biological Sciences'), ('COMMUNICAT', 'Written/Oral Communications'), 
+                  ('ETH/CIV RE', 'Ethic/Civil Responsibility'), ('GLOB PERSP', 'Global Perspective'), 
+                  ('HI/BEH/SCC', 'History & Behavioral/Social Sciences'), ('HUMAN DIV', 'Human Diversity'),  
+                  ('HUMANITIES', 'Humanities'), ('LIB ED ELC', 'Liberal Education Elective'), 
+                  ('PEOPLE/ENV', 'People/Environment'), ('PHYS SCI', 'Physical Sciences'), 
+                  ('MATH THINK', 'Mathematical Thinking')]
+
+    GER_CHOICES = [('ARTP', 'Artistic Performance'), ('HUM', 'Communication, Language, Literature, and Philosophy'), 
+                   ('ECR', 'Ethical & Civic Responsibility'), ('ENVT', 'People and Environment'), 
+                   ('FA', 'Fine Arts'), ('FL', 'Foreign Language'), ('HIST', 'Historical Perspectives'), 
+                   ('SS', 'Human Behavior, Social Processes, and Institutions'), ('HDIV', 'Human Diversity'), 
+                   ('IC', 'Intellectual Community'), ('IP', 'International Perspective'), 
+                   ('M/SR', 'Mathematical/Symbolic Reasoning'), ('SCI', 'Physical & Biological Sciences'), 
+                   ('SCIL', 'Physical & Biological Sciences with Lab'), ('WLA', 'Writing for the Liberal Arts')]
+
+    DLE_CHOICES = [('CDIVERSITY', 'Cultural Diversity in the US'), ('FINE ARTS', 'Fine Arts'), ('GLOBAL PER', 'Global Perspectives'), 
+                   ('HUMANITIES', 'Humanities'), ('LOGIC & QR', 'Logic & Quantitative Reasoning'), ('NAT SCI', 'Natural Sciences'), 
+                   ('COMM & LAN', 'Oral Communication & Languages'), ('SOC SCI', 'Social Sciences'), ('SUSTAIN', 'Sustainability'),
+                   ('WRITING', 'Writing & Information Literacy')]
 
     campus = SelectField(label='Campus', choices=CAMPUS_CHOICES, validators=[DataRequired()])
-    umntc = SelectMultipleField(label='Liberal Education', choices=UMNTC_CHOICES)
-    term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()])
+    cle = MultiCheckboxField(label='Twin Cities/Rochester Liberal Education', choices=CLE_CHOICES)
+    dle = MultiCheckboxField(label='Duluth Liberal Education', choices=DLE_CHOICES)
+    ge = MultiCheckboxField(label='Crookston Liberal Education', choices=GE_CHOICES)
+    ger = MultiCheckboxField(label='Morris Liberal Education', choices=GER_CHOICES)
+    term = SelectField(label='Term', choices=TERM_CHOICES, validators=[DataRequired()], default='1159')
     level = SelectField(label='Level', choices=LEVEL_CHOICES, validators=[DataRequired()])
     subject = TextField(label='Subject')
     course_number = TextField(label='Course Number')
@@ -60,11 +86,12 @@ class SearchForm(Form):
 
         json_data = json.loads(f.read())
         subject = self.subject.data.upper()
-        for key, value in json_data.iteritems():
-            if subject == key:
-                found = True
-        if not found:
-            self.subject.errors.append('Please enter a valid course subject')
-            return False
+        if subject: # make sure to only validate subject if something was entered.
+            for key, value in json_data.iteritems():
+                if subject == key:
+                    found = True
+            if not found:
+                self.subject.errors.append('Please enter a valid course subject')
+                return False
         return True
 
