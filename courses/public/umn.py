@@ -241,7 +241,7 @@ class CourseSearch(object):
 
 
 def get_courses(campus, level, subject,course_number=None,compare=None, le=[]):
-    url = 'http://courses.umn.edu/campuses/%s/terms/1159/courses.json?q=%s' % (campus, level)
+    url = 'http://courses.umn.edu/campuses/%s/terms/1169/courses.json?q=%s' % (campus, level)
     if subject:
         url += ',subject_id=%s' % subject
     if course_number:
@@ -253,7 +253,8 @@ def get_courses(campus, level, subject,course_number=None,compare=None, le=[]):
         url += '|%s' % l
 
     data = CourseSearch(url).get_object_list()
-    if len(data) > 200:
+
+    if len(data) > 500:
         data = None
     
     return data
@@ -267,7 +268,8 @@ def get_classes(campus, term, level, subject,course_number=None,compare=None, le
         url += ',catalog_number%s%s' % (compare, course_number)
     
     data = CourseSearch(url).get_object_list()
-    if len(data) > 200:
+
+    if len(data) > 500:
         data = None
     
     return data

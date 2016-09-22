@@ -15,7 +15,7 @@ class SearchForm(Form):
                       ('umnro', 'Rochester'), ('umncr', 'Crookston'),
                       ('umnmo', 'Morris')]
 
-    TERM_CHOICES = [('1155', 'Summer 2015'), ('1159', 'Fall 2015'), ('1163', 'Spring 2016')]
+    TERM_CHOICES = [('1165', 'Summer 2016'), ('1169', 'Fall 2016'), ('1173', 'Spring 2017')]
 
     COMPARE_CHOICES = [('','--choose comparison--'), ('<', 'less than'), ('<=', 'less than or equal to'),
                        ('=','equal to'), ('>=', 'greater than or equal to'),

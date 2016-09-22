@@ -7,8 +7,6 @@ from courses.assets import assets
 from courses.extensions import (
     bcrypt,
     cache,
-    db,
-    migrate,
     debug_toolbar,
 )
 from courses import public
@@ -32,9 +30,7 @@ def register_extensions(app):
     assets.init_app(app)
     bcrypt.init_app(app)
     cache.init_app(app)
-    db.init_app(app)
     debug_toolbar.init_app(app)
-    migrate.init_app(app, db)
     return None
 
 

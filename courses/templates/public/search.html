@@ -5,7 +5,7 @@
 	<h1>Search</h1>
 	<form id="registerForm" class="form form-register" method="POST" action="" role="form">
             {{ form.hidden_tag() }}
-            <div id="campus" class="form-group">
+            <div class="form-group">
                 {{form.campus.label}}
                 {{form.campus(class_="form-control")}}
             </div>
@@ -51,11 +51,24 @@
 <script>
     $(window).load(function() {
         function displayLibEds() {
-            var allLibEds = document.getElementsByClassName('lib-ed');
             var campus = $('#campus').val();
-            console.log(campus);
+            $('.lib-ed').each( function () {
+                $(this).addClass('hidden');
+            });
+            if (campus == 'umndl'){
+                $('#dle').removeClass('hidden');
+            }
+            else if (campus == 'umncr'){
+                $('#ge').removeClass('hidden');
+            }
+            else if (campus == 'umnmo'){
+                $('#ger').removeClass('hidden');
+            }
+            else {
+                $('#cle').removeClass('hidden');
+            }
         }
-        $('#campus').on('click', displayLibEds);
+        $('#campus').on('change', displayLibEds);
     });
 </script>
 {% endblock %}

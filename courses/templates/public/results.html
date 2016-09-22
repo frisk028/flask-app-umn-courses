@@ -18,6 +18,8 @@
                     {% else %}
                     <dd>{{ course.credits_maximum }}</dd>
                     {% endif %}
+                    <dt>Credit Repeat Limit</dt>
+                    <dd>{{ course.repeat_limit }}</dd>
                     {% if not class_search %}
                     <dt>Frequency</dt>
                     <dd>{{ course.frequency }}</dd>
